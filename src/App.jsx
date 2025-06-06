@@ -87,7 +87,7 @@ export default function App() {
             <h2>{book.title}</h2>
             <p><strong>Author:</strong> {book.fullName}</p>
             <p><strong>Genre:</strong> {book.genre}</p>
-            <p><strong>classYear:</strong> {book.classYear}</p>
+            <p><strong>Class year:</strong> {book.classYear}</p>
             <p><strong>Publisher:</strong> {book.publisher}</p>
             <p><strong>Year:</strong> {book.publicationYear}</p>
             {book.Notes && <p><strong>Notes:</strong> {book.Notes}</p>}
