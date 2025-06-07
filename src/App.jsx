@@ -7,8 +7,8 @@ export default function App() {
   const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedGenre, setSelectedGenre] = useState('All');
-  const [selectedClassYear, setSelectedClassYear] = useState('All');
+  const [selectedGenre, setSelectedGenre] = useState('all');
+  const [selectedPubYear, setSelectedPubYear] = useState('all');
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -22,22 +22,22 @@ export default function App() {
 
   useEffect(() => {
     filterBooks();
-  }, [searchQuery, selectedGenre, selectedClassYear, books]);
+  }, [searchQuery, selectedGenre, selectedPubYear, books]);
 
-  const classYears = Array.from(new Set(books.map(b => b['classYear']))).filter(Boolean).sort();
+  const publicationYears = Array.from(new Set(books.map(b => b.publicationYear))).filter(Boolean).sort();
   const genres = ['All', 'Poetry', 'Fiction', 'Poetry/Fiction'];
 
   const fuse = new Fuse(books, {
-    keys: ['fullName', 'title', 'publisher', 'genre', 'classYear'],
+    keys: ['fullName', 'title', 'publisher', 'genre', 'publicationYear'],
     threshold: 0.3,
     ignoreLocation: true,
   });
 
   function filterBooks() {
     const results = searchQuery ? fuse.search(searchQuery).map(r => r.item) : books;
-    const filtered = results.filter(b =>
-      (selectedGenre === 'All' || b.genre === selectedGenre) &&
-      (selectedClassYear === 'All' || b['classYear'] === selectedClassYear)
+    const filtered = results.filter(b => 
+      (selectedGenre === 'all' || b.genre === selectedGenre) &&
+      (selectedPubYear === 'all' || b.publicationYear === parseInt(selectedPubYear, 10))
     );
     setFilteredBooks(filtered);
   }
@@ -68,9 +68,9 @@ export default function App() {
             <option key={g} value={g}>{g}</option>
           ))}
         </select>
-        <select value={selectedClassYear} onChange={e => setSelectedClassYear(e.target.value)}>
-          <option value="All">All Years</option>
-          {classYears.map(y => (
+        <select value={selectedPubYear} onChange={e => setSelectedPubYear(e.target.value)}>
+          <option value="All">Publication Year</option>
+          {publicationYears.map(y => (
             <option key={y} value={y}>{y}</option>
           ))}
         </select>
